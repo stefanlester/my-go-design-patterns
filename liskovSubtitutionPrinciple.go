@@ -1,97 +1,82 @@
 package main
 
-type Document struct {
+import "fmt"
 
+type Sized interface {
+	GetWidth() int
+	SetWidth(width int)
+	GetHeight() int
+	SetHeight(height int)
 }
 
-type Machine interface {
-	Print(d Document)
-	Fax(d Document)
-	Scan(d Document)
+type Rectangle struct {
+	width, height int
 }
 
-// ok if you need a multifunction device
-type MultiFunctionPrinter struct {
-	// ...
+//     vvv !! POINTER
+func (r *Rectangle) GetWidth() int {
+	return r.width
 }
 
-func (m MultiFunctionPrinter) Print(d Document) {
-
+func (r *Rectangle) SetWidth(width int) {
+	r.width = width
 }
 
-func (m MultiFunctionPrinter) Fax(d Document) {
-
+func (r *Rectangle) GetHeight() int {
+	return r.height
 }
 
-func (m MultiFunctionPrinter) Scan(d Document) {
-
+func (r *Rectangle) SetHeight(height int) {
+	r.height = height
 }
 
-type OldFashionedPrinter struct {
-	// ...
+// modified LSP
+// If a function takes an interface and
+// works with a type T that implements this
+// interface, any structure that aggregates T
+// should also be usable in that function.
+type Square struct {
+	Rectangle
 }
 
-func (o OldFashionedPrinter) Print(d Document) {
-	// ok
+func NewSquare(size int) *Square {
+	sq := Square{}
+	sq.width = size
+	sq.height = size
+	return &sq
 }
 
-func (o OldFashionedPrinter) Fax(d Document) {
-	panic("operation not supported")
+func (s *Square) SetWidth(width int) {
+	s.width = width
+	s.height = width
 }
 
-// Deprecated: ...
-func (o OldFashionedPrinter) Scan(d Document) {
-	panic("operation not supported")
+func (s *Square) SetHeight(height int) {
+	s.width = height
+	s.height = height
 }
 
-// better approach: split into several interfaces
-type Printer interface {
-	Print(d Document)
+type Square2 struct {
+	size int
 }
 
-type Scanner interface {
-	Scan(d Document)
+func (s *Square2) Rectangle() Rectangle {
+	return Rectangle{s.size, s.size}
 }
 
-// printer only
-type MyPrinter struct {
-	// ...
-}
-
-func (m MyPrinter) Print(d Document) {
-	// ...
-}
-
-// combine interfaces
-type Photocopier struct {}
-
-func (p Photocopier) Scan(d Document) {
-	//
-}
-
-func (p Photocopier) Print(d Document) {
-	//
-}
-
-type MultiFunctionDevice interface {
-	Printer
-	Scanner
-}
-
-// interface combination + decorator
-type MultiFunctionMachine struct {
-	printer Printer
-	scanner Scanner
-}
-
-func (m MultiFunctionMachine) Print(d Document) {
-	m.printer.Print(d)
-}
-
-func (m MultiFunctionMachine) Scan(d Document) {
-	m.scanner.Scan(d)
+func UseIt(sized Sized) {
+	width := sized.GetWidth()
+	sized.SetHeight(10)
+	expectedArea := 10 * width
+	actualArea := sized.GetWidth() * sized.GetHeight()
+	fmt.Print("Expected an area of ", expectedArea,
+		", but got ", actualArea, "\n")
 }
 
 func main__() {
+	rc := &Rectangle{2, 3}
+	UseIt(rc)
 
+	sq := NewSquare(5)
+	UseIt(sq)
 }
