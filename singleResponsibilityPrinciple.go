@@ -62,7 +62,7 @@ func (p *Persistence) saveToFile(j *Journal, filename string) {
 }
 
 
-func main() {
+func main____() {
 	j := Journal{}
 	j.AddEntry("I cried today.")
 	j.AddEntry("I ate a bug")
