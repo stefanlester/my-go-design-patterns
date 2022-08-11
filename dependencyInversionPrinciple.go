@@ -73,7 +73,7 @@ func (r *Research) Investigate() {
 	}
 }
 
-func main() {
+func main_1() {
 	parent := Person{"John" }
 	child1 := Person{ "Chris" }
 	child2 := Person{ "Matt" }
