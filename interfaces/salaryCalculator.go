@@ -1,6 +1,6 @@
-/* 
+/*
 A Simple Program to calculate the total expense of a company based on the individual employee salary
- */
+*/
 package main
 
 import (
@@ -22,6 +22,12 @@ type Contract struct {
 	basicpay int
 }
 
+type FreeLancer struct {
+	empId       int
+	ratePerHour int
+	totalHours  int
+}
+
 //salary of permanent employee is the sum of basic pay and pf
 func (p Permanent) CalculateSalary() int {
 	return p.basicpay + p.pf
@@ -30,6 +36,11 @@ func (p Permanent) CalculateSalary() int {
 //salary of contract employee is the basic pay alone
 func (c Contract) CalculateSalary() int {
 	return c.basicpay
+}
+
+//salary of freelancer is the basic pay + rate per hour * total hours
+func (f FreeLancer) CalculateSalary() int {
+	return f.ratePerHour * f.totalHours
 }
 
 /*
@@ -59,7 +70,12 @@ func main() {
 		empId:    3,
 		basicpay: 3000,
 	}
-	employees := []SalaryCalculator{pemp1, pemp2, cemp1}
+	freelancer1 := FreeLancer{
+		empId:       4,
+		ratePerHour: 20,
+		totalHours:  160,
+	}
+	employees := []SalaryCalculator{pemp1, pemp2, cemp1, freelancer1}
 	totalExpense(employees)
 
 }
