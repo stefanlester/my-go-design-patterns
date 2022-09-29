@@ -23,7 +23,7 @@ func (e *HtmlElement) string(indent int) string {
 	i := strings.Repeat(" ", indentSize*indent)
 	sb.WriteString(fmt.Sprintf("%d<%s>\n", i, e.name))
 	if len(e.text) > 0 {
-		sb.WriteString(strings.Repeat(" ",indentSize*(indent+1)))
+		sb.WriteString(strings.Repeat(" ", indentSize*(indent+1)))
 		sb.WriteString(e.text)
 		sb.WriteString("\n")
 	}
