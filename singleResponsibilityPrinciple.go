@@ -3,11 +3,12 @@ package main
 import (
 	"fmt"
 	"io/ioutil"
-	"net/url" 
+	"net/url"
 	"strings"
 )
 
 var entryCount = 0
+
 type Journal struct {
 	entries []string
 }
@@ -29,8 +30,6 @@ func (j *Journal) RemoveEntry(index int) {
 	// ...
 }
 
-
-
 // breaks srp
 
 func (j *Journal) Save(filename string) {
@@ -47,6 +46,7 @@ func (j *Journal) LoadFromWeb(url *url.URL) {
 }
 
 var lineSeparator = "\n"
+
 func SaveToFile(j *Journal, filename string) {
 	_ = ioutil.WriteFile(filename,
 		[]byte(strings.Join(j.entries, lineSeparator)), 0644)
@@ -60,7 +60,6 @@ func (p *Persistence) saveToFile(j *Journal, filename string) {
 	_ = ioutil.WriteFile(filename,
 		[]byte(strings.Join(j.entries, p.lineSeparator)), 0644)
 }
-
 
 func main____() {
 	j := Journal{}
