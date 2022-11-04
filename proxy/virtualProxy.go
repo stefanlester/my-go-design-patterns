@@ -24,3 +24,25 @@ func DrawImage(image Image) {
 	image.Draw()
 	fmt.Println("Done drawing the image")
 }
+
+type LazyBitmap struct {
+	filename string
+	bitmap   *Bitmap
+}
+
+func (l *LazyBitmap) Draw() {
+	if l.bitmap == nil {
+		l.bitmap = NewBitmap(l.filename)
+	}
+	l.bitmap.Draw()
+}
+
+func NewLazyBitmap(filename string) *LazyBitmap {
+	return &LazyBitmap{filename: filename}
+}
+
+func main() {
+	//bmp := NewBitmap("demo.png")
+	bmp := NewLazyBitmap("demo.png")
+	DrawImage(bmp)
+}
