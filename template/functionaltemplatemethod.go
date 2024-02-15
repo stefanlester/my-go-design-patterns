@@ -21,7 +21,7 @@ func main() {
 
 	takeTurn := func() {
 		turn++
-		fmt.Printf("Turn %d taken by player %d\n",
+		fmt.Printf("Turn %d taken by Player %d\n",
 			turn, currentPlayer)
 		currentPlayer = (currentPlayer + 1) % 2
 	}
